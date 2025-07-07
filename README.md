@@ -22,3 +22,20 @@
 git clone https://github.com/YOUR_USERNAME/jdx-pulse.git
 cd jdx-pulse
 ```
+
+## Project Structure
+
+jdx-pulse/
+├── agent/                   # Core logic for scrapers, summarizers, email
+│   ├── __init__.py
+│   ├── reddit_scraper.py    # Pulls trending Reddit posts
+│   ├── youtube_scraper.py   # Pulls trending YouTube videos
+│   ├── summarizer.py        # OpenAI summarization logic
+│   ├── newsletter_builder.py# Builds the text/HTML body for email
+│   ├── email_sender.py      # Sends emails via MailerSend
+├── main.py                   # The main runner script (entry point)
+├── .env                      # Your local environment variables (keep secret)
+├── .env.example              # Example env file for reference
+├── requirements.txt          # Python package dependencies
+├── README.md
+└── .gitignore                # Ignore env files, __pycache__, etc.
