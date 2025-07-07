@@ -1,0 +1,19 @@
+{
+  "data": [
+    {
+      "title": "AI Revolution",
+      "url": "https://twitter.com/search?q=AI",
+      "score": 50000,
+      "source": "twitter"
+    },
+    {
+      "title": "Web3 Development",
+      "url": "https://twitter.com/search?q=Web3",
+      "score": 35000,
+      "source": "twitter"
+    }
+  ],
+  "created_at": 1751922322.732658,
+  "expires_at": 1751924122.7326589,
+  "key": "twitter_trending"
+}

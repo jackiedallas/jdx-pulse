@@ -1,0 +1,25 @@
+{
+  "data": [
+    {
+      "title": "TikTok-Scraper-Video-Downloader-Reporter - A powerful all-in-one TikTok automation tool built for data scraping and content handling. Features ...",
+      "url": "https://github.com/TTCoding25/TikTok-Scraper-Video-Downloader-Reporter",
+      "score": 80,
+      "source": "github",
+      "language": null,
+      "stars": 80,
+      "forks": 1
+    },
+    {
+      "title": "Telegram-Marketing-Tool - A powerful Python script, the best marketing tool in 2025, that allows you to scrape messages and me...",
+      "url": "https://github.com/CodeBangg/Telegram-Marketing-Tool",
+      "score": 54,
+      "source": "github",
+      "language": "Python",
+      "stars": 54,
+      "forks": 72
+    }
+  ],
+  "created_at": 1751922322.935952,
+  "expires_at": 1751925922.935952,
+  "key": "github_trending"
+}

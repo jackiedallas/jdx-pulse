@@ -1,0 +1,25 @@
+{
+  "data": [
+    {
+      "title": "The Fed says this is a cube of $1M. They're off by half a million",
+      "url": "https://calvin.sh/blog/fed-lie/",
+      "score": 1468,
+      "source": "hackernews",
+      "comments": 549,
+      "author": "c249709",
+      "time": 1751386975
+    },
+    {
+      "title": "More on Apple's Trust-Eroding 'F1 the Movie' Wallet Ad",
+      "url": "https://daringfireball.net/2025/06/more_on_apples_trust-eroding_f1_the_movie_wallet_ad",
+      "score": 971,
+      "source": "hackernews",
+      "comments": 635,
+      "author": "dotcoma",
+      "time": 1751183156
+    }
+  ],
+  "created_at": 1751922333.895783,
+  "expires_at": 1751924133.895784,
+  "key": "hackernews_trending"
+}

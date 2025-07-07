@@ -1,0 +1,21 @@
+{
+  "data": [
+    {
+      "title": "World's Fastest Car Vs Cheetah!",
+      "url": "https://www.youtube.com/watch?v=FWAdfuPpLOc",
+      "views": 64556932,
+      "channel": "MrBeast",
+      "source": "youtube"
+    },
+    {
+      "title": "United States vs. Mexico Concacaf Gold Cup Highlights | FOX Soccer",
+      "url": "https://www.youtube.com/watch?v=uSGPn8Eb0XM",
+      "views": 757712,
+      "channel": "FOX Soccer",
+      "source": "youtube"
+    }
+  ],
+  "created_at": 1751922316.609092,
+  "expires_at": 1751924116.6090932,
+  "key": "youtube_trending"
+}
