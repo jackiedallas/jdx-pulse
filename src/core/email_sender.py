@@ -31,7 +31,7 @@ def send_newsletter_to_contact_list(subject, html_content=None, content_items=No
         
         # Create the email with contact list
         message = Mail(
-            from_email=os.getenv("FROM_EMAIL"),
+            from_email="pulse@jdxsoftware.com",
             subject=subject,
             html_content=html_content
         )
@@ -179,7 +179,7 @@ def send_newsletter(subject, html_content, recipient_email=None, content_items=N
         html_content = build_email_newsletter(content_items, title="JDX PULSE")
     
     message = Mail(
-        from_email=os.getenv("FROM_EMAIL"),
+        from_email="pulse@jdxsoftware.com",
         to_emails=recipient_email,
         subject=subject,
         html_content=html_content
@@ -277,6 +277,12 @@ def build_email_newsletter(summaries, title="JDX PULSE"):
         </tr>
         """
         
+        # Build media content - YouTube gets thumbnail, others get button
+        if source == 'youtube':
+            media_content = _build_youtube_thumbnail_email(main_story['url'], main_story['summary'])
+        else:
+            media_content = f'<a href="{main_story["url"]}" style="display: inline-block; background: #2c2c2c; color: white; padding: 8px 16px; text-decoration: none; font-size: 14px; font-weight: bold; border: 2px solid #2c2c2c;">{action_text}</a>'
+        
         main_story_html = f"""
         <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid #eee;">
             <tr>
@@ -286,7 +292,7 @@ def build_email_newsletter(summaries, title="JDX PULSE"):
                     <div style="font-size: 12px; color: #888; margin-bottom: 12px; border-left: 3px solid #ccc; padding-left: 12px;">
                         {source_emoji} {source.title()} • {_format_engagement(views, source)}
                     </div>
-                    <a href="{main_story['url']}" style="display: inline-block; background: #2c2c2c; color: white; padding: 8px 16px; text-decoration: none; font-size: 14px; font-weight: bold; border: 2px solid #2c2c2c;">{action_text}</a>
+                    {media_content}
                 </td>
             </tr>
         </table>
@@ -321,6 +327,12 @@ def build_email_newsletter(summaries, title="JDX PULSE"):
             section_color = _get_section_color(source)
             title = story['summary'][:80] + ('...' if len(story['summary']) > 80 else '')
             
+            # Build media content - YouTube gets thumbnail, others get button
+            if source == 'youtube':
+                media_content = _build_youtube_thumbnail_email(story['url'], story['summary'])
+            else:
+                media_content = f'<a href="{story["url"]}" style="display: inline-block; background: #2c2c2c; color: white; padding: 8px 16px; text-decoration: none; font-size: 14px; font-weight: bold; border: 2px solid #2c2c2c;">{action_text}</a>'
+            
             other_stories_html += f"""
             <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid #eee;">
                 <tr>
@@ -330,7 +342,7 @@ def build_email_newsletter(summaries, title="JDX PULSE"):
                         <div style="font-size: 12px; color: #888; margin-bottom: 12px; border-left: 3px solid #ccc; padding-left: 12px;">
                             {source_emoji} {source.title()} • {views_text}
                         </div>
-                        <a href="{story['url']}" style="display: inline-block; background: #2c2c2c; color: white; padding: 8px 16px; text-decoration: none; font-size: 14px; font-weight: bold; border: 2px solid #2c2c2c;">{action_text}</a>
+                        {media_content}
                     </td>
                 </tr>
             </table>
@@ -356,12 +368,15 @@ def build_email_newsletter(summaries, title="JDX PULSE"):
         trending_content = ""
         for i, item in enumerate(trending_items[:5], 1):
             source = item.get('source', 'unknown')
-            title = item['summary'][:60] + ('...' if len(item['summary']) > 60 else '')
+            title = item['summary']  # Use full title instead of truncated
+            url = item.get('url', '#')
             
             trending_content += f"""
             <div style="margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px dotted #ccc;">
                 <span style="font-weight: bold; color: #ff4444; margin-right: 8px;">{i}.</span>
-                <div style="font-size: 14px; line-height: 1.4; color: #2c2c2c;">{title}</div>
+                <div style="font-size: 14px; line-height: 1.4;">
+                    <a href="{url}" style="color: #2c2c2c; text-decoration: none;">{title}</a>
+                </div>
                 <div style="font-size: 11px; color: #888; text-transform: uppercase; margin-top: 4px;">{source.title()}</div>
             </div>
             """
@@ -639,3 +654,35 @@ def _get_section_color(source):
         'wired': '#000000'
     }
     return colors.get(source, '#2c2c2c')
+
+def _extract_youtube_id(url):
+    """Extract YouTube video ID from URL"""
+    import re
+    
+    # Regular expressions for different YouTube URL formats
+    patterns = [
+        r'(?:https?://)?(?:www\.)?youtube\.com/watch\?v=([a-zA-Z0-9_-]+)',
+        r'(?:https?://)?(?:www\.)?youtu\.be/([a-zA-Z0-9_-]+)',
+        r'(?:https?://)?(?:www\.)?youtube\.com/embed/([a-zA-Z0-9_-]+)'
+    ]
+    
+    for pattern in patterns:
+        match = re.search(pattern, url)
+        if match:
+            return match.group(1)
+    
+    return None
+
+def _build_youtube_thumbnail_email(video_url, title):
+    """Build YouTube thumbnail HTML for email"""
+    video_id = _extract_youtube_id(video_url)
+    if not video_id:
+        return f'<a href="{video_url}" style="display: inline-block; background: #2c2c2c; color: white; padding: 8px 16px; text-decoration: none; font-size: 14px; font-weight: bold; border: 2px solid #2c2c2c;">WATCH NOW</a>'
+    
+    thumbnail_url = f"https://img.youtube.com/vi/{video_id}/maxresdefault.jpg"
+    
+    return f"""
+    <a href="{video_url}" style="display: block; text-decoration: none;">
+        <img src="{thumbnail_url}" alt="{title}" style="width: 100%; max-width: 300px; height: auto; border-radius: 6px; margin: 12px 0;">
+    </a>
+    """
