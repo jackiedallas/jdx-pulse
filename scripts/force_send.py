@@ -5,9 +5,12 @@ Usage: python force_send.py [recipient_email]
 """
 
 import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from main import fetch_all_content, process_content
-from agent.newsletter_builder import build_newsletter
-from agent.email_sender import send_newsletter, get_email_cache_stats, clear_email_cache
+from src.core.newsletter_builder import build_newsletter
+from src.core.email_sender import send_newsletter, get_email_cache_stats, clear_email_cache
 
 def force_send_newsletter(recipient_email=None):
     """Force send newsletter bypassing cache"""

@@ -1,14 +1,14 @@
-from agent.youtube_scraper import fetch_youtube_trending, fetch_youtube_categories
-from agent.reddit_scraper import fetch_multiple_subreddits
-from agent.twitter_scraper import fetch_twitter_search
-from agent.github_scraper import fetch_github_trending
-from agent.hackernews_scraper import fetch_hackernews_trending
-from agent.wired_scraper import fetch_wired_trending
-from agent.summarizer import summarize_text
-from agent.newsletter_builder import build_newsletter
-from agent.email_sender import send_newsletter
-from agent.cache_manager import cached_request
-from agent.retry_handler import safe_execute, batch_execute, api_rate_limiter
+from src.scrapers.youtube_scraper import fetch_youtube_trending, fetch_youtube_categories
+from src.scrapers.reddit_scraper import fetch_multiple_subreddits
+from src.scrapers.twitter_scraper import fetch_twitter_search
+from src.scrapers.github_scraper import fetch_github_trending
+from src.scrapers.hackernews_scraper import fetch_hackernews_trending
+from src.scrapers.wired_scraper import fetch_wired_trending
+from src.core.summarizer import summarize_text
+from src.core.newsletter_builder import build_newsletter
+from src.core.email_sender import send_newsletter
+from src.utils.cache_manager import cached_request
+from src.utils.retry_handler import safe_execute, batch_execute, api_rate_limiter
 
 def fetch_all_content():
     """Fetch content from all sources with error handling and caching"""

@@ -2,7 +2,7 @@ import os
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 from dotenv import load_dotenv
-from .email_cache import EmailCache
+from ..utils.email_cache import EmailCache
 
 load_dotenv()
 
