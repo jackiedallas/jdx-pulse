@@ -1,19 +1,28 @@
 {
   "data": [
     {
-      "title": "AI Revolution",
-      "url": "https://twitter.com/search?q=AI",
-      "score": 50000,
-      "source": "twitter"
+      "title": "The future of AI is here - breakthrough in neural networks",
+      "url": "https://twitter.com/example/status/123",
+      "score": 25000,
+      "source": "twitter",
+      "author": "Tech Leader"
     },
     {
-      "title": "Web3 Development",
-      "url": "https://twitter.com/search?q=Web3",
-      "score": 35000,
-      "source": "twitter"
+      "title": "New programming language revolutionizes web development",
+      "url": "https://twitter.com/example/status/124",
+      "score": 18000,
+      "source": "twitter",
+      "author": "Developer"
+    },
+    {
+      "title": "Startup raised $50M in Series A funding",
+      "url": "https://twitter.com/example/status/125",
+      "score": 12000,
+      "source": "twitter",
+      "author": "Investor"
     }
   ],
-  "created_at": 1751922322.732658,
-  "expires_at": 1751924122.7326589,
+  "created_at": 1751985365.8785,
+  "expires_at": 1751987165.8785012,
   "key": "twitter_trending"
 }

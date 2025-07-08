@@ -1,10 +1,9 @@
 from agent.youtube_scraper import fetch_youtube_trending, fetch_youtube_categories
 from agent.reddit_scraper import fetch_multiple_subreddits
-from agent.twitter_scraper import fetch_twitter_trending
-from agent.tiktok_scraper import fetch_tiktok_trending
+from agent.twitter_scraper import fetch_twitter_search
 from agent.github_scraper import fetch_github_trending
 from agent.hackernews_scraper import fetch_hackernews_trending
-from agent.producthunt_scraper import fetch_producthunt_today
+from agent.wired_scraper import fetch_wired_trending
 from agent.summarizer import summarize_text
 from agent.newsletter_builder import build_newsletter
 from agent.email_sender import send_newsletter
@@ -16,13 +15,12 @@ def fetch_all_content():
     
     # Define fetch functions for each source
     fetch_functions = [
-        lambda: cached_request("youtube_trending", lambda: fetch_youtube_trending(max_results=2), ttl=1800),
-        lambda: cached_request("reddit_multi", lambda: fetch_multiple_subreddits(limit_per_sub=2), ttl=1800),
-        lambda: cached_request("twitter_trending", lambda: fetch_twitter_trending(limit=2), ttl=1800),
-        lambda: cached_request("tiktok_trending", lambda: fetch_tiktok_trending(limit=2), ttl=1800),
-        lambda: cached_request("github_trending", lambda: fetch_github_trending(limit=2), ttl=3600),
-        lambda: cached_request("hackernews_trending", lambda: fetch_hackernews_trending(limit=2), ttl=1800),
-        lambda: cached_request("producthunt_today", lambda: fetch_producthunt_today(limit=2), ttl=3600)
+        lambda: cached_request("youtube_trending", lambda: fetch_youtube_trending(max_results=3), ttl=1800),
+        lambda: cached_request("reddit_multi", lambda: fetch_multiple_subreddits(limit_per_sub=3), ttl=1800),
+        lambda: cached_request("twitter_trending", lambda: fetch_twitter_search("AI OR tech OR startup OR coding", limit=3), ttl=7200),
+        lambda: cached_request("github_trending", lambda: fetch_github_trending(limit=3), ttl=3600),
+        lambda: cached_request("hackernews_trending", lambda: fetch_hackernews_trending(limit=3), ttl=1800),
+        lambda: cached_request("wired_trending", lambda: fetch_wired_trending(limit=3), ttl=3600)
     ]
     
     # Execute all fetch functions with error handling
@@ -30,7 +28,7 @@ def fetch_all_content():
     
     # Flatten and combine all results
     all_content = []
-    source_names = ["YouTube", "Reddit", "Twitter", "TikTok", "GitHub", "Hacker News", "Product Hunt"]
+    source_names = ["YouTube", "Reddit", "Twitter", "GitHub", "Hacker News", "Wired"]
     
     for i, result in enumerate(results):
         if result:
@@ -59,6 +57,10 @@ def process_content(content_items):
             context = f"GitHub Repository: {item['title']} | Language: {item.get('language', 'Unknown')}"
         elif source == 'hackernews':
             context = f"Hacker News: {item['title']} | Comments: {item.get('comments', 0)}"
+        elif source == 'devto':
+            context = f"Dev.to Article: {item['title']} | Author: {item.get('author', 'Unknown')}"
+        elif source == 'wired':
+            context = f"Wired Article: {item['title']} | Description: {item.get('description', '')[:100]}"
         else:
             context = f"{source.title()}: {item['title']}"
         
