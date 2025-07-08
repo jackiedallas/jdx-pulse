@@ -5,48 +5,56 @@ from src.scrapers.github_scraper import fetch_github_trending
 from src.scrapers.hackernews_scraper import fetch_hackernews_trending
 from src.scrapers.wired_scraper import fetch_wired_trending
 from src.core.summarizer import summarize_text
-from src.core.newsletter_builder import build_newsletter
 from src.core.email_sender import send_newsletter
 from src.utils.cache_manager import cached_request
 from src.utils.retry_handler import safe_execute, batch_execute, api_rate_limiter
 
+
 def fetch_all_content():
     """Fetch content from all sources with error handling and caching"""
-    
+
     # Define fetch functions for each source
     fetch_functions = [
-        lambda: cached_request("youtube_trending", lambda: fetch_youtube_trending(max_results=3), ttl=1800),
-        lambda: cached_request("reddit_multi", lambda: fetch_multiple_subreddits(limit_per_sub=3), ttl=1800),
-        lambda: cached_request("twitter_trending", lambda: fetch_twitter_search("AI OR tech OR startup OR coding", limit=3), ttl=7200),
-        lambda: cached_request("github_trending", lambda: fetch_github_trending(limit=3), ttl=3600),
-        lambda: cached_request("hackernews_trending", lambda: fetch_hackernews_trending(limit=3), ttl=1800),
-        lambda: cached_request("wired_trending", lambda: fetch_wired_trending(limit=3), ttl=3600)
+        lambda: cached_request(
+            "youtube_trending", lambda: fetch_youtube_trending(max_results=3), ttl=1800),
+        lambda: cached_request(
+            "reddit_multi", lambda: fetch_multiple_subreddits(limit_per_sub=3), ttl=1800),
+        lambda: cached_request("twitter_trending", lambda: fetch_twitter_search(
+            "AI OR tech OR startup OR coding", limit=3), ttl=7200),
+        lambda: cached_request(
+            "github_trending", lambda: fetch_github_trending(limit=3), ttl=3600),
+        lambda: cached_request(
+            "hackernews_trending", lambda: fetch_hackernews_trending(limit=3), ttl=1800),
+        lambda: cached_request(
+            "wired_trending", lambda: fetch_wired_trending(limit=3), ttl=3600)
     ]
-    
+
     # Execute all fetch functions with error handling
     results = batch_execute(fetch_functions, continue_on_error=True)
-    
+
     # Flatten and combine all results
     all_content = []
-    source_names = ["YouTube", "Reddit", "Twitter", "GitHub", "Hacker News", "Wired"]
-    
+    source_names = ["YouTube", "Reddit", "Twitter",
+        "GitHub", "Hacker News", "Wired"]
+
     for i, result in enumerate(results):
         if result:
             print(f"✓ Fetched {len(result)} items from {source_names[i]}")
             all_content.extend(result)
         else:
             print(f"✗ Failed to fetch from {source_names[i]}")
-    
+
     return all_content
+
 
 def process_content(content_items):
     """Process and summarize content items"""
     summarized_content = []
-    
+
     for item in content_items:
         # Use rate limiting for AI summarization
         api_rate_limiter.wait_if_needed()
-        
+
         # Create context based on source
         source = item.get('source', 'unknown')
         if source == 'youtube':
@@ -57,19 +65,18 @@ def process_content(content_items):
             context = f"GitHub Repository: {item['title']} | Language: {item.get('language', 'Unknown')}"
         elif source == 'hackernews':
             context = f"Hacker News: {item['title']} | Comments: {item.get('comments', 0)}"
-        elif source == 'devto':
-            context = f"Dev.to Article: {item['title']} | Author: {item.get('author', 'Unknown')}"
         elif source == 'wired':
             context = f"Wired Article: {item['title']} | Description: {item.get('description', '')[:100]}"
         else:
             context = f"{source.title()}: {item['title']}"
-        
+
         # Summarize with error handling
         summary = safe_execute(
             lambda: summarize_text(context),
-            fallback_value=item['title'][:100] + "..." if len(item['title']) > 100 else item['title']
+            fallback_value=item['title'][:100] +
+                "..." if len(item['title']) > 100 else item['title']
         )
-        
+
         # Standardize the data structure
         summarized_content.append({
             "summary": summary,
@@ -77,49 +84,67 @@ def process_content(content_items):
             "views": item.get('score', item.get('views', 0)),
             "source": source
         })
-    
+
     # Sort by engagement (views/score) and return top items
     summarized_content.sort(key=lambda x: x['views'], reverse=True)
     return summarized_content[:12]  # Top 12 items for newsletter
 
+
 if __name__ == "__main__":
     print("🚀 Starting JDX Pulse content aggregation...")
-    
+
     # Fetch content from all sources
     all_content = fetch_all_content()
     print(f"📊 Total items fetched: {len(all_content)}")
-    
+
     if not all_content:
         print("❌ No content fetched. Check your API keys and network connection.")
         exit(1)
-    
+
     # Process and summarize content
     print("🤖 Processing and summarizing content...")
     processed_content = process_content(all_content)
     print(f"📝 Processed {len(processed_content)} items")
-    
-    # Build the newsletter
-    print("📧 Building newsletter...")
-    newsletter = build_newsletter(processed_content)
-    
-    # Print preview (truncated)
-    print("📋 Newsletter preview:")
+
+    # Print content preview
+    print("📋 Content preview:")
     print("=" * 50)
-    preview = newsletter[:500] + "..." if len(newsletter) > 500 else newsletter
-    print(preview)
+    for i, item in enumerate(processed_content[:3], 1):
+        print(
+            f"{i}. {item['summary'][:60]}... ({item['source']}: {item['views']} engagements)")
     print("=" * 50)
-    
-    # Send the newsletter
-    print("📤 Sending newsletter...")
+
+    # Send to contact list
+    # success = send_newsletter(
+    #     subject="📡 JDX Pulse - Today's Top Trends",
+    #     html_content=None,
+    #     content_items=processed_content,
+    #     force_send=False,
+    #     use_contact_list=True  # This is the key change!
+    # )
+
+    # Or send to single recipient (existing behavior)
     success = send_newsletter(
         subject="📡 JDX Pulse - Today's Top Trends",
-        html_content=newsletter,
+        html_content=None,
         recipient_email="jackie.dallas@jdxsoftware.com",
         content_items=processed_content,
-        force_send=False  # Set to True to bypass cache
+        force_send=False,
+        use_contact_list=False
     )
-    
+
     if success:
         print("✅ Newsletter sent successfully!")
+        print("📧 Email-optimized newsletter delivered to inbox")
     else:
         print("❌ Failed to send newsletter")
+        print("💡 Check your SendGrid API key and FROM_EMAIL settings")
+
+    # Show summary stats
+    print("\n📈 Summary Stats:")
+    total_engagement = sum(item['views'] for item in processed_content)
+    sources = list(set(item['source'] for item in processed_content))
+    print(f"   • Total items: {len(processed_content)}")
+    print(f"   • Total engagement: {total_engagement:,}")
+    print(f"   • Sources: {', '.join(sources)}")
+    print(f"   • Top story: {processed_content[0]['summary'][:50]}..." if processed_content else "   • No stories")

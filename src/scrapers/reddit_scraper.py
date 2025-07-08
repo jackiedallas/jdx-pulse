@@ -28,7 +28,8 @@ def fetch_top_posts(subreddit_name="technology", limit=5):
                         "score": post['score'],
                         "author": post['author'],
                         "subreddit": post['subreddit'],
-                        "created_utc": post['created_utc']
+                        "created_utc": post['created_utc'],
+                        "source": "reddit"
                     })
             
             return posts
