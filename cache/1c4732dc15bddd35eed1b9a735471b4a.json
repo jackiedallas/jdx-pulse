@@ -1,28 +1,28 @@
 {
   "data": [
     {
-      "title": "The future of AI is here - breakthrough in neural networks",
-      "url": "https://twitter.com/example/status/123",
-      "score": 25000,
+      "title": "RT @sax6996: Ki\u1ebfp n\u1ea1n c\u1ee7a m\u1ea5y anh trai b\u00e1n s\u1ecbp \ud83e\ude72\ud83e\udd72nh\u00e2n v\u1eadt ti\u1ebfp theo l\u00e0 ai \u0111\u00e2y \ud83d\ude08 https://t.co/ysnM...",
+      "url": "https://twitter.com/Trngnguyn526561/status/1942601385108988229",
+      "score": 2128,
       "source": "twitter",
-      "author": "Tech Leader"
+      "author": "Tr\u1ecdngnguy\u00ean"
     },
     {
-      "title": "New programming language revolutionizes web development",
-      "url": "https://twitter.com/example/status/124",
-      "score": 18000,
+      "title": "RT @tomoyaasakura: \u7c73\u56fd\u3067\u306f\u3001\u300c\u5b66\u3079\u3070\u5b89\u6cf0\u300d\u3068\u8a00\u308f\u308c\u305f\u30b3\u30f3\u30d4\u30e5\u30fc\u30bf\u30fc\u5de5\u5b66\u3084\u30b3\u30f3\u30d4\u30e5\u30fc\u30bf\u30fc\u30b5\u30a4\u30a8\u30f3\u30b9\u306e\u5352\u696d\u751f\u306e\u5931\u696d\u7387\u304c\u3001\u54f2\u5b66\u3084\u7f8e\u8853\u53f2\u3088\u308a\u3082\u9ad8\u3044\u3002AI\u306e\u6025\u901f\u306a\u9032\u5316\u3067\u30d7\u30ed\u30b0\u30e9\u30df\u30f3\u30b0\u9700...",
+      "url": "https://twitter.com/hirohiro_think/status/1942601384999936363",
+      "score": 55,
       "source": "twitter",
-      "author": "Developer"
+      "author": "\u535a\u675c"
     },
     {
-      "title": "Startup raised $50M in Series A funding",
-      "url": "https://twitter.com/example/status/125",
-      "score": 12000,
+      "title": "RT @NtandoMabonaSec: Ai kanti ngu Guluva njalo nje?? Baphi abanye abantu?  REEL DAY X SWEET GULUV...",
+      "url": "https://twitter.com/BiancahMoyo/status/1942601386320871671",
+      "score": 16,
       "source": "twitter",
-      "author": "Investor"
+      "author": "welokhuzana"
     }
   ],
-  "created_at": 1751985365.8785,
-  "expires_at": 1751987165.8785012,
+  "created_at": 1751987247.380818,
+  "expires_at": 1751994447.380818,
   "key": "twitter_trending"
 }

@@ -176,7 +176,7 @@ def build_newsletter(summaries, title="JDX PULSE"):
             .section-label.reddit {{ background: #ff4500; }}
             .section-label.github {{ background: #24292e; }}
             .section-label.hackernews {{ background: #ff6600; }}
-            .section-label.twitter {{ background: #1da1f2; }}
+            .section-label.twitter {{ background: #000000; }}
             .section-label.wired {{ background: #000000; }}
             
             .article-title {{
@@ -529,12 +529,15 @@ def _build_trending_sidebar(trending_items):
     trending_html = []
     for i, item in enumerate(trending_items[:5], 1):
         source = item.get('source', 'unknown')
-        title = item['summary'][:60] + ('...' if len(item['summary']) > 60 else '')
+        title = item['summary']  # Use full title instead of truncated
+        url = item.get('url', '#')
         
         trending_html.append(f"""
         <div class="trending-item">
             <span class="trending-number">{i}.</span>
-            <div class="trending-title">{title}</div>
+            <div class="trending-title">
+                <a href="{url}" style="color: #2c2c2c; text-decoration: none;">{title}</a>
+            </div>
             <div class="trending-source">{source.title()}</div>
         </div>
         """)
@@ -614,8 +617,8 @@ def _get_source_emoji(source):
         'reddit': '📱',
         'github': '⚡',
         'hackernews': '🔺',
-        'twitter': '🐦',
-        'wired': '⚡',
+        'twitter': '𝕏',
+        'wired': '📰',
         'devto': '📝'
     }
     return emojis.get(source, '📄')
@@ -627,7 +630,7 @@ def _get_action_text(source):
         'reddit': 'READ MORE',
         'github': 'VIEW CODE',
         'hackernews': 'JOIN DISCUSSION',
-        'twitter': 'VIEW TWEET',
+        'twitter': 'VIEW POST',
         'wired': 'READ ARTICLE',
         'devto': 'READ ARTICLE'
     }
@@ -640,8 +643,8 @@ def _get_section_name(source):
         'reddit': 'SOCIAL',
         'github': 'TECH',
         'hackernews': 'ANALYSIS',
-        'twitter': 'SOCIAL',
-        'wired': 'TECH',
+        'twitter': 'X',
+        'wired': 'WIRED',
         'devto': 'ARTICLES'
     }
     return sections.get(source, 'NEWS')

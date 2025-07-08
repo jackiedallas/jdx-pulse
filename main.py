@@ -114,7 +114,9 @@ if __name__ == "__main__":
     success = send_newsletter(
         subject="📡 JDX Pulse - Today's Top Trends",
         html_content=newsletter,
-        recipient_email="jackie.dallas@jdxsoftware.com"
+        recipient_email="jackie.dallas@jdxsoftware.com",
+        content_items=processed_content,
+        force_send=False  # Set to True to bypass cache
     )
     
     if success:
