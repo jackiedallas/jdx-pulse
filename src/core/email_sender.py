@@ -498,7 +498,8 @@ def build_email_newsletter(summaries, title="JDX PULSE"):
                     <!-- Footer -->
                     <tr>
                         <td style="background: #2c2c2c; color: white; padding: 30px 40px; text-align: center;">
-                            <p style="font-size: 14px; margin: 0 0 16px 0; color: white;">© {current_year} • Powered by JDX Software</p>
+                            <p style="font-size: 14px; margin: 0 0 16px 0; color: white;">© {current_year} JDX PULSE • Powered by JDX Software LLC</p>
+                            <p style="font-size: 12px; margin: 0 0 16px 0; color: #ccc;">Creators of Manualize - Making documentation effortless</p>
                             <div style="font-size: 12px; color: white;">
                                 <a href="#" style="color: #ccc; text-decoration: none; margin: 0 12px;">Subscribe</a> |
                                 <a href="#" style="color: #ccc; text-decoration: none; margin: 0 12px;">Archive</a> |

@@ -385,6 +385,7 @@ def build_newsletter(summaries, title="JDX PULSE"):
             <!-- Footer -->
             <div class="newspaper-footer">
                 <p class="footer-text">© 2025 {title} • Powered by JDX Software</p>
+                <p class="footer-text" style="font-size: 12px; margin-top: 8px; color: #ccc;">Creators of Manualize - Making documentation effortless</p>
                 <div class="footer-links">
                     <a href="#">Subscribe</a> |
                     <a href="#">Archive</a> |
